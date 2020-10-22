@@ -8,7 +8,7 @@ def home(request):
 
     all_posts = Post.newmanager.all()
 
-    return render(request, 'index.html', {'posts': all_posts})
+    return render(request, 'blog/index.html', {'posts': all_posts})
 
 
 def post_single(request, post):
@@ -28,11 +28,11 @@ def post_single(request, post):
             return HttpResponseRedirect('/' + post.slug)
     else:
         comment_form = NewCommentForm()
-    return render(request, 'single.html', {'post': post, 'comments':  user_comment, 'comments': comments, 'comment_form': comment_form})
+    return render(request, 'blog/post_detail.html', {'post': post, 'comments':  user_comment, 'comments': comments, 'comment_form': comment_form})
 
 
 class CatListView(ListView):
-    template_name = 'category.html'
+    template_name = 'blog/category.html'
     context_object_name = 'catlist'
 
     def get_queryset(self):
