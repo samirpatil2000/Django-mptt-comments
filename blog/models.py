@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
+import random
 
 def user_directory_path(instance, filename):
     return 'posts/%Y/%m/%d/'.format(instance.id, filename)
@@ -48,7 +49,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-
+def default_comment():
+    n=random.randrange(10,20)
+    return f'Title Comment{n}'
 class Comment(MPTTModel):
 
     post = models.ForeignKey(Post,
@@ -56,7 +59,7 @@ class Comment(MPTTModel):
                              related_name='comments')
     parent = TreeForeignKey('self', on_delete=models.CASCADE,
                             null=True, blank=True, related_name='children')
-    name = models.CharField(max_length=50, default="Name ")
+    name = models.CharField(max_length=50, default=default_comment)
     email = models.EmailField( default="email@gmail.com")
     content = models.TextField( default="This is the comment")
     publish = models.DateTimeField(auto_now_add=True)
